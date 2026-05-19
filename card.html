@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حق هنو برضو</title>
+    <style>
+        /* إعدادات الخطوط والألوان العامة */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* كارت الاحتفال الرئيسي */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-in-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* أنيميشن ظهور الكارت */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .name {
+            color: #e74c3c;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* زر الانتقال إلى الصفحة الثانية */
+        .next-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            text-decoration: none;
+            padding: 14px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.6);
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+
+        .next-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* تأثير الـ Confetti (القصاصات الملونة) */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- خلفية تساقط قصاصات الورق -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- كارت التهنئة -->
+    <div class="card">
+        <div class="icon">🎓</div>
+        
+        <!-- يمكنك تعديل الاسم والنصوص هنا مباشرة -->
+        <h1>مبرووكك التخرج يا احلى خريجة</h1>
+        <span class="name">هدية بسيطة لتخرج الملكا هيني</span>
+        
+        <p>الف الف مبروك التخرج يا اغلى البشر و يا احسن من تخرج و عقبال ما نكون مع بعض فكل نجاحاتنا</p>
+        
+        <!-- زر الانتقال (يرتبط بالصفحة الثانية مستقبلاً) -->
+        <a href="song.html" class="next-btn">هدية بسيطه جدا لك</a>
+    </div>
+
+    <!-- كود الجافا سكريبت لتأثير الـ Confetti -->
+    <script>
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let pieces = [];
+        const numberOfPieces = 150;
+        const colors = ['#f00', '#0f0', '#00f', '#0ff', '#f0f', '#ff0', '#e74c3c', '#3498db', '#f1c40f'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.width = Math.random() * 8 + 4;
+                this.height = Math.random() * 15 + 10;
+                this.speed = Math.random() * 3 + 2;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) {
+                    this.y = 0 - this.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+                ctx.restore();
+            }
+        }
+
+        function init() {
+            for (let i = 0; i < numberOfPieces; i++) {
+                pieces.push(new Confetti());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(piece => {
+                piece.update();
+                piece.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
