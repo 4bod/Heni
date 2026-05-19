@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حق هنو</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e1e24 0%, #0a0a0c 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            color: #f1c40f;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+        }
+
+        /* --- مشغل الأسطوانة الكلاسيكية --- */
+        .player-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* جسم الأسطوانة الفينيل الأسود */
+        .vinyl-record {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #333 10%, #111 11%, #111 20%, #222 21%, #111 30%, #222 31%, #111 40%, #222 41%, #111 50%, #222 51%, #111 60%, #222 61%, #111 70%, #222 71%, #111 80%, #111 100%);
+            border-radius: 50%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        /* الملصق الدائري في منتصف الأسطوانة */
+        .vinyl-label {
+            width: 38%;
+            height: 38%;
+            background: #f1c40f; 
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 10px;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            background-size: cover;
+            background-position: center;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        /* الثقب الصغير في مركز الأسطوانة */
+        .vinyl-label::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #1e1e24;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* اسم الأغنية المكتوب داخل الملصق */
+        .label-text {
+            font-size: 0.7rem;
+            max-width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        /* أنيميشن دوران الأسطوانة عند تشغيل الأغنية */
+        .spinning {
+            animation: spinRecord 4s linear infinite;
+        }
+
+        @keyframes spinRecord {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- مشغل الصوت الافتراضي --- */
+        audio {
+            width: 100%;
+            margin-bottom: 30px;
+            outline: none;
+        }
+
+        /* --- قائمة الأغاني بالأسفل --- */
+        .playlist-title {
+            font-size: 1.2rem;
+            text-align: right;
+            margin-bottom: 15px;
+            color: #f1c40f;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .song-item {
+            background: #1c1c24;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            text-align: right;
+        }
+
+        .song-item:hover {
+            background: #252530;
+            transform: translateY(-2px);
+            border-color: #f1c40f;
+        }
+
+        .song-item.active {
+            background: #2a2a38;
+            border-color: #f1c40f;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.2);
+        }
+
+        /* كفر الأغنية الصغير في القائمة بالأسفل */
+        .song-cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-left: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            background-color: #2a2a38;
+            border: 1px solid #444;
+        }
+
+        .song-info h3 {
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .song-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* زر العودة للرئيسية */
+        .back-link {
+            display: inline-block;
+            margin-top: 35px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>اغاني خريجتي المفضلة 🎧</h1>
+        <p class="subtitle">اختري اي اغنية و بتشتغل يا لابوبو</p>
+
+        <div class="player-container">
+            <div class="vinyl-record" id="vinyl-record">
+                <div class="vinyl-label" id="vinyl-label">
+                    <span style="font-size: 0.5rem; letter-spacing: 1px; color: rgba(0,0,0,0.6); font-weight: bold;"></span>
+                    <div class="label-text" id="current-title">اختاري أغنية</div>
+                    <span style="font-size: 0.5rem; margin-top: 15px; color: rgba(0,0,0,0.6); font-weight: bold;"></span>
+                </div>
+            </div>
+        </div>
+
+        <audio id="main-audio" controls>
+            <source id="audio-source" src="" type="audio/mpeg">
+            متصفحك لا يدعم تشغيل الصوت.
+        </audio>
+
+        <h2 class="playlist-title">قائمة الأغاني:</h2>
+        
+        <div class="songs-grid">
+            
+            <div class="song-item" onclick="playSong('Sun and moon', 'sun and moon.mp3', '#f1c40f', 'Sun and moon pf.jpeg', this)">
+                <div class="song-cover" style="background-image: url('Sun and moon pf.jpeg');"></div>
+                <div class="song-info">
+                    <h3>Sun and moon</h3>
+                    <p>Mage tears</p>
+                </div>
+            </div>
+
+            <div class="song-item" onclick="playSong('the blonde ', 'The Blonde.mp3', '#e74c3c', 'the blonde.jpeg', this)">
+                <div class="song-cover" style="background-image: url('the blonde.jpeg');"></div>
+                <div class="song-info">
+                    <h3>the blonde</h3>
+                    <p>TV Girl</p>
+                </div>
+            </div>
+
+            <div class="song-item" onclick="playSong('look after you', 'look after you.mp3', '#3498db', 'look after you.JPG', this)">
+                <div class="song-cover" style="background-image: url('look after you.JPG');"></div>
+                <div class="song-info">
+                    <h3>look after you</h3>
+                    <p>The fray</p>
+                </div>
+            </div>
+
+            <div class="song-item" onclick="playSong('Don’t let me go', 'Don’t let me go.mp3', '#2ecc71', 'Don’t let me go.JPG', this)">
+                <div class="song-cover" style="background-image: url('Don’t let me go.JPG');"></div>
+                <div class="song-info">
+                    <h3>Don’t let me go</h3>
+                    <p>CAS</p>
+                </div>
+            </div>
+
+            <div class="song-item" onclick="playSong('Cry', 'Cry.mp3', '#2ecc71', 'Don’t let me go.JPG', this)">
+                <div class="song-cover" style="background-image: url('Don’t let me go.JPG');"></div>
+                <div class="song-info">
+                    <h3>Cry</h3>
+                    <p>CAS</p>
+                </div>
+            </div>
+
+            <div class="song-item" onclick="playSong('500 miles', '500.mp3', '#2ecc71', '500.png', this)">
+                <div class="song-cover" style="background-image: url('500.png');"></div>
+                <div class="song-info">
+                    <h3> 500 miles</h3>
+                    <p>peter , paul & mary</p>
+                </div>
+            </div>
+
+            <div class="song-item" onclick="playSong('mrs magic', 'mrs magic.mp3', '#2ecc71', 'mrs magic.png', this)">
+                <div class="song-cover" style="background-image: url('mrs magic.png');"></div>
+                <div class="song-info">
+                    <h3>mrs magic</h3>
+                    <p>strawberry guy</p>
+                </div>
+            </div>
+
+
+            <div class="song-item" onclick="playSong('the night we met', 'the night we met.mp3', '#2ecc71', 'the night we met.png', this)">
+                <div class="song-cover" style="background-image: url('the night we met.png');"></div>
+                <div class="song-info">
+                    <h3>the night we met</h3>
+                    <p>Lord Huron</p>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="index.html" class="back-link">الرجوع الى الصفحة الاولى</a>
+    </div>
+
+    <script>
+        const audio = document.getElementById('main-audio');
+        const source = document.getElementById('audio-source');
+        const titleDisplay = document.getElementById('current-title');
+        const vinylRecord = document.getElementById('vinyl-record');
+        const vinylLabel = document.getElementById('vinyl-label');
+
+        function playSong(title, fileName, labelColor, imageName, element) {
+            // 1. تحديث مصدر الصوت وتشغيله
+            source.src = fileName;
+            audio.load();
+            audio.play().catch(err => console.log("تحتاج المتصفحات لضغطة أولى لتفعيل الصوت تلقائياً"));
+
+            // 2. تحديث نص الملصق الداخلي للأسطوانة
+            titleDisplay.innerText = title;
+
+            // 3. الحل الجذري: تركيب رابط الخلفية بشكل نظيف عبر السكربت مباشرة
+            vinylLabel.style.backgroundColor = labelColor;
+            vinylLabel.style.backgroundImage = "url('" + imageName + "')";
+
+            // 4. تمييز الأغنية المختارة في القائمة بالأسفل
+            document.querySelectorAll('.song-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // تفعيل الأنيميشن (الدوران الدائري) عند التشغيل الفعلي للأغنية
+        audio.onplay = function() {
+            vinylRecord.classList.add('spinning');
+        };
+
+        // إيقاف الدوران عند الضغط على إيقاف مؤقت أو انتهاء الأغنية
+        audio.onpause = function() {
+            vinylRecord.classList.remove('spinning');
+        };
+    </script>
+</body>
+</html>
